@@ -39,23 +39,20 @@
 #     }
 #   }
 #
-define registry::value($key, $value, $type='string', $data=undef,$ensure=present) {
+define registry::to_value($path=$title, $value=undef, $type='string', $data=undef,$ensure=present) {
   # validate our inputs.
-  validate_re($key, '^\w+', "key parameter must not be empty but it is key => '$key'")
-  validate_re($type, '^\w+', "type parameter must not be empty but it is type => '$type'")
+  $pkey=rkdirname($path)
+  $pvalue=rkbasename($path)
 
-  if ((!defined(Registry_key["${key}"])) and $ensure==present) {
-    registry_key { "${key}":
-      ensure=>present,
-    }
-  }
+  validate_re($type, '^\w+', "type parameter must not be empty but it is type => '$type'")
 
   # If value_real is an empty string then the default value of the key will be
   # managed.
-  registry_value { "${key}\\${value}":
-    ensure=>$ensure,
-    type  =>$type,
-    data  =>$data,
+  registry::value { $path:
+    ensure =>$ensure,
+    key    =>$pkey,
+    value  =>$pvalue,
+    type   =>$type,
+    data   =>$data,
   }
 }
-

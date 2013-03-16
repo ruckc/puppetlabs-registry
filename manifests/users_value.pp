@@ -39,23 +39,16 @@
 #     }
 #   }
 #
-define registry::value($key, $value, $type='string', $data=undef,$ensure=present) {
+define registry::users_value($path=$title, $value=undef, $type='string', $data=undef,$ensure=present) {
   # validate our inputs.
-  validate_re($key, '^\w+', "key parameter must not be empty but it is key => '$key'")
   validate_re($type, '^\w+', "type parameter must not be empty but it is type => '$type'")
-
-  if ((!defined(Registry_key["${key}"])) and $ensure==present) {
-    registry_key { "${key}":
-      ensure=>present,
-    }
-  }
 
   # If value_real is an empty string then the default value of the key will be
   # managed.
-  registry_value { "${key}\\${value}":
-    ensure=>$ensure,
-    type  =>$type,
-    data  =>$data,
+  $hkeys=expand_hku($path,split($registry_hkey_users,','))
+  registry::to_value { $hkeys:
+    ensure =>$ensure,
+    type   =>$type,
+    data   =>$data,
   }
 }
-

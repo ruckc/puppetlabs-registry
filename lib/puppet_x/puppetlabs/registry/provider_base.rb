@@ -32,6 +32,7 @@ module ProviderBase
         {
           :hkcr => Win32::Registry::HKEY_CLASSES_ROOT,
           :hklm => Win32::Registry::HKEY_LOCAL_MACHINE,
+          :hku => Win32::Registry::HKEY_USERS,
         }
       end
     end
