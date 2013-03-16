@@ -36,6 +36,9 @@
 # Copyright 2011 Your name here, unless otherwise noted.
 #
 class registry {
-
-
+  #registry::users_value{'Software\TEST\test':
+  #  ensure=>present,
+  #  data  =>'SUCCESS',
+  #  type  =>string,
+  #}
 }
